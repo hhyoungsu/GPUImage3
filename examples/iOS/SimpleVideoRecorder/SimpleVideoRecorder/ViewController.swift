@@ -1,6 +1,7 @@
 import UIKit
 import GPUImage
 import AVFoundation
+import Photos
 
 class ViewController: UIViewController {
     @IBOutlet weak var renderView: RenderView!
@@ -8,6 +9,7 @@ class ViewController: UIViewController {
     var filter:SaturationAdjustment!
     var isRecording = false
     var movieOutput:MovieOutput? = nil
+    var outputUrl: URL?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +40,8 @@ class ViewController: UIViewController {
                 } catch {
                 }
                 
+                outputUrl = fileURL
+                
                 movieOutput = try MovieOutput(URL:fileURL, size:Size(width:480, height:640), liveVideo:true)
                 camera.audioEncodingTarget = movieOutput
                 filter --> movieOutput!
@@ -50,7 +54,13 @@ class ViewController: UIViewController {
                 fatalError("Couldn't initialize movie, error: \(error)")
             }
         } else {
-            movieOutput?.finishRecording{
+            movieOutput?.finishRecording{ [weak self] in
+                guard let self = self else { return }
+                
+                if let url = self.outputUrl {
+                    PHPhotoLibrary.shared().saveVideo(url: url, albumName: "test1")
+                }
+                
                 self.isRecording = false
                 DispatchQueue.main.async {
                     (sender as! UIButton).titleLabel!.text = "Record"

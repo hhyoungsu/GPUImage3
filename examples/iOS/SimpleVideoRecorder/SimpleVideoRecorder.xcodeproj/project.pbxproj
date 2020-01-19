@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37729B1123D491BC00CD677B /* PhotoExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37729B1023D491BC00CD677B /* PhotoExt.swift */; };
 		BC9E36A21E525CB400B8604F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BC9E369D1E525C9900B8604F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BCA0C3341CCBFFAE0034F922 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA0C3331CCBFFAE0034F922 /* AppDelegate.swift */; };
 		BCA0C3361CCBFFAE0034F922 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA0C3351CCBFFAE0034F922 /* ViewController.swift */; };
@@ -23,13 +24,6 @@
 			remoteGlobalIDString = BC6E7CAB1C39A9D8006DF678;
 			remoteInfo = GPUImage_macOS;
 		};
-		BC9E369A1E525C9900B8604F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC6E7CB51C39A9D8006DF678;
-			remoteInfo = GPUImageTests_macOS;
-		};
 		BC9E369C1E525C9900B8604F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */;
@@ -37,18 +31,11 @@
 			remoteGlobalIDString = BC9E34E91E524A2200B8604F;
 			remoteInfo = GPUImage_iOS;
 		};
-		BC9E369E1E525C9900B8604F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC9E34F11E524A2200B8604F;
-			remoteInfo = GPUImageTests_iOS;
-		};
 		BC9E36A01E525CAF00B8604F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = BC9E34E81E524A2200B8604F;
+			remoteGlobalIDString = BCE0BE7B20D6DE610006E120;
 			remoteInfo = GPUImage_iOS;
 		};
 /* End PBXContainerItemProxy section */
@@ -67,6 +54,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		37729B1023D491BC00CD677B /* PhotoExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoExt.swift; sourceTree = "<group>"; };
 		BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../../../../framework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		BCA0C3301CCBFFAE0034F922 /* SimpleVideoRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleVideoRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCA0C3331CCBFFAE0034F922 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -91,10 +79,8 @@
 		BC9E36921E525C9900B8604F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BC9E36991E525C9900B8604F /* GPUImage.framework */,
-				BC9E369B1E525C9900B8604F /* GPUImageTests_macOS.xctest */,
 				BC9E369D1E525C9900B8604F /* GPUImage.framework */,
-				BC9E369F1E525C9900B8604F /* GPUImageTests_iOS.xctest */,
+				BC9E36991E525C9900B8604F /* GPUImage.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,6 +107,7 @@
 			children = (
 				BCA0C3331CCBFFAE0034F922 /* AppDelegate.swift */,
 				BCA0C3351CCBFFAE0034F922 /* ViewController.swift */,
+				37729B1023D491BC00CD677B /* PhotoExt.swift */,
 				BCA0C3481CCC00B20034F922 /* Main.storyboard */,
 				BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */,
 			);
@@ -173,6 +160,7 @@
 				TargetAttributes = {
 					BCA0C32F1CCBFFAE0034F922 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = T6DB2VB7L7;
 						LastSwiftMigration = 0940;
 					};
 				};
@@ -182,6 +170,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -209,25 +198,11 @@
 			remoteRef = BC9E36981E525C9900B8604F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		BC9E369B1E525C9900B8604F /* GPUImageTests_macOS.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GPUImageTests_macOS.xctest;
-			remoteRef = BC9E369A1E525C9900B8604F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		BC9E369D1E525C9900B8604F /* GPUImage.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = GPUImage.framework;
 			remoteRef = BC9E369C1E525C9900B8604F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BC9E369F1E525C9900B8604F /* GPUImageTests_iOS.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GPUImageTests_iOS.xctest;
-			remoteRef = BC9E369E1E525C9900B8604F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -251,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCA0C3361CCBFFAE0034F922 /* ViewController.swift in Sources */,
+				37729B1123D491BC00CD677B /* PhotoExt.swift in Sources */,
 				BCA0C3341CCBFFAE0034F922 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -395,10 +371,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = T6DB2VB7L7;
 				INFOPLIST_FILE = SimpleVideoRecorder/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleVideoRecorder;
+				PRODUCT_BUNDLE_IDENTIFIER = co.hyoung.ham;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -409,10 +386,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = T6DB2VB7L7;
 				INFOPLIST_FILE = SimpleVideoRecorder/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleVideoRecorder;
+				PRODUCT_BUNDLE_IDENTIFIER = co.hyoung.ham;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;

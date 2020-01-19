@@ -46,7 +46,8 @@ public struct CameraError: Error {
 let initialBenchmarkFramesToIgnore = 5
 
 
-public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBufferDelegate {
+public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBufferDelegate,
+    AVCaptureAudioDataOutputSampleBufferDelegate {
 
     public var location:PhysicalCameraLocation {
         didSet {
@@ -55,6 +56,20 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     public var runBenchmark:Bool = false
     public var logFPS:Bool = false
+    public var audioEncodingTarget:AudioEncodingTarget? {
+         didSet {
+             guard let audioEncodingTarget = audioEncodingTarget else {
+                 self.removeAudioInputsAndOutputs()
+                 return
+             }
+             do {
+                 try self.addAudioInputsAndOutputs()
+                 audioEncodingTarget.activateAudioTrack()
+             } catch {
+                 fatalError("ERROR: Could not connect audio target with error: \(error)")
+             }
+         }
+     }
     
     public let targets = TargetContainer()
     public var delegate: CameraDelegate?
@@ -64,6 +79,9 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     let videoInput:AVCaptureDeviceInput!
     let videoOutput:AVCaptureVideoDataOutput!
     var videoTextureCache: CVMetalTextureCache?
+    var microphone:AVCaptureDevice?
+    var audioInput:AVCaptureDeviceInput?
+    var audioOutput:AVCaptureAudioDataOutput?
     
     var supportsFullYUVRange:Bool = false
     let captureAsYUV:Bool
@@ -75,6 +93,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     let cameraFrameProcessingQueue = DispatchQueue(
         label: "com.sunsetlakesoftware.GPUImage.cameraFrameProcessingQueue",
         attributes: [])
+    let audioProcessingQueue:DispatchQueue = DispatchQueue.global(qos: .background)
+
     
     let framesToIgnore = 5
     var numberOfFramesCaptured = 0
@@ -119,6 +139,18 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         if (captureSession.canAddInput(videoInput)) {
             captureSession.addInput(videoInput)
         }
+        
+//        // Setup Microphone
+//        let microphone = AVCaptureDevice.default(for: AVMediaType.audio)!
+//
+//        do {
+//            let micInput = try AVCaptureDeviceInput(device: microphone)
+//            if captureSession.canAddInput(micInput) {
+//                captureSession.addInput(micInput)
+//            }
+//        } catch {
+//            print("Error setting device audio input: \(error)")
+//        }
         
         // Add the video frame output
         videoOutput = AVCaptureVideoDataOutput()
@@ -173,6 +205,11 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     
     public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        
+        guard (output != audioOutput) else {
+            self.processAudioSampleBuffer(sampleBuffer)
+            return
+        }
         
         guard (frameRenderingSemaphore.wait(timeout:DispatchTime.now()) == DispatchTimeoutResult.success) else { return }
         
@@ -288,5 +325,48 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
 
     public func transmitPreviousImage(to target: ImageConsumer, atIndex: UInt) {
         // Not needed for camera
+    }
+    
+    // MARK: -
+    // MARK: Audio processing
+    
+    func addAudioInputsAndOutputs() throws {
+        guard (self.audioOutput == nil) else { return }
+        
+        captureSession.beginConfiguration()
+        defer {
+            captureSession.commitConfiguration()
+        }
+        guard let microphone = AVCaptureDevice.default(for: .audio) else {
+            return
+        }
+        let audioInput = try AVCaptureDeviceInput(device:microphone)
+        if captureSession.canAddInput(audioInput) {
+            captureSession.addInput(audioInput)
+        }
+        let audioOutput = AVCaptureAudioDataOutput()
+        if captureSession.canAddOutput(audioOutput) {
+            captureSession.addOutput(audioOutput)
+        }
+        self.microphone = microphone
+        self.audioInput = audioInput
+        self.audioOutput = audioOutput
+        audioOutput.setSampleBufferDelegate(self, queue:audioProcessingQueue)
+    }
+    
+    func removeAudioInputsAndOutputs() {
+        guard (audioOutput != nil) else { return }
+        
+        captureSession.beginConfiguration()
+        captureSession.removeInput(audioInput!)
+        captureSession.removeOutput(audioOutput!)
+        audioInput = nil
+        audioOutput = nil
+        microphone = nil
+        captureSession.commitConfiguration()
+    }
+    
+    func processAudioSampleBuffer(_ sampleBuffer:CMSampleBuffer) {
+        self.audioEncodingTarget?.processAudioBuffer(sampleBuffer)
     }
 }
